@@ -1,175 +1,392 @@
 # Omneum Architecture
 
-This document describes the high-level Omneum system architecture, including its runtime components, client-server boundary, request flow, and deployment model.
+This document describes the architecture of the Omneum assertion-evaluation system and the boundary between an integrating application, the Python SDK, and the Omneum server.
 
-To see related specifications, visit:
+## 1. Architectural Boundary
 
-- **[`sdk.md`](sdk.md)** — the application-facing Python interface and client-side processing performed by the SDK.
-- **[`api.md`](api.md)** — the MCP tools, wire schemas, validation rules, resource limits, and assertion-evaluation semantics.
-- **[`protocol.md`](protocol.md)** — the interoperability contract between clients and Omneum deployments, including protocol roles, trust boundaries, token identity, and key lifecycle.
-- **[`canonicalization.md`](canonicalization.md)** — semantic canonicalization, strict serialization, and versioned linkage-input encoding.
+Omneum sits between information-producing parts of an agent workflow and the point where that information is consumed downstream.
 
-## 1. Objectives
+A typical flow is:
 
-Omneum is a data trust gateway for agentic systems. It provides a protocol and runtime for evaluating structured assertions across multiple sources without exposing the underlying application data to the evaluator.
+```text
+Retrieval / Tools / Workflow State
+              ↓
+       Application Data
+              ↓
+Semantic Normalization + Provenance Mapping
+              ↓
+   Omneum Python SDK
+              ↓
+    Dependency Estimation
+              ↓
+ Privacy-Preserving Linkage
+              ↓
+      Omneum MCP Server
+              ↓
+      Evaluation Result
+              ↓
+      Agent Control Flow
+```
 
-Omneum is designed to integrate with existing data and agent pipelines without requiring the deployment to ingest or interpret application content.
+The application remains responsible for deciding what information represents the same structured assertion.
 
-The architecture is guided by several core design principles:
+Omneum handles the evaluation after that boundary has been established.
 
-- Application-specific extraction remains outside the Omneum runtime.
-- Content-sensitive processing occurs client-side before data crosses the deployment boundary.
-- VOPRF linkage replaces canonical application values with opaque protocol identifiers.
-- Assertion evaluation is stateless and request-scoped.
-- Client and deployment components communicate through a versioned protocol interface.
-  
-## 2. System Overview
+Provenance is allowed to be partial. If the runtime has provenance information, it can supply it. If it does not, the field remains unavailable.
 
-At the highest level, Omneum is composed of three key architectural components:
+Missing provenance is not treated as observed independence.
 
-- Omneum SDK
-- Omneum Deployment
-- Assertion Evaluation Engine
+## 2. Application Integration
 
-Applications integrate through the Omneum SDK using structured assertions, mapped retrieval or tool output, or the lower-level observation interface. The SDK converts these application-facing inputs into the common internal assertion representation, performs deterministic canonicalization and serialization, executes VOPRF linkage, estimates source dependency, constructs the protocol request, and submits it to an Omneum deployment.
+Applications can enter the evaluation pipeline through either `StructuredAssertion` or `ContextMapper`.
 
-An Omneum deployment validates the incoming request, constructs the request-scoped graph from opaque identifiers, executes the configured assertion-evaluation algorithm, and returns the protocol response. The deployment does not persist assertion graphs or evaluation state between requests.
+### Structured assertions
 
-<p align="center">
-  <img src="images/architecture.png" alt="Omneum system architecture" width="600">
-</p>
+`StructuredAssertion` is the direct path when the application already has a normalized assertion and its supporting sources.
 
-<p align="center">
-  <em>Figure 1. High-level architecture of the Omneum system.</em>
-</p>
+The application provides a structured identity of the form:
 
-## 3. Architectural Components
+```text
+(entity_namespace, entity, attribute) → value
+```
 
-### 3.1 Omneum SDK
+along with the sources that surfaced that value.
 
-The SDK is the application-facing client. It exposes multiple integration paths for supplying information to be evaluated: client.evaluate() accepts an application-normalized StructuredAssertion, client.evaluate_mapped() adapts existing retrieval or tool output through a ContextMapper, and the lower-level client.evaluate_assertion() interface accepts Observation objects directly.
-These interfaces converge on the same internal assertion-evaluation pipeline. The SDK performs deterministic canonicalization and serialization, VOPRF client operations, source-dependency estimation, request construction, response validation, and mapping between application-local values and opaque protocol identifiers. Application values remain client-side and are not included in assertion-evaluation requests.
+### Existing runtime data
 
-### 3.2 Omneum Deployment
+`ContextMapper` is the adapter path for applications that already have retrieval results, tool responses, connector records, models, or workflow state in their own schemas.
 
-The deployment is the server-side protocol runtime. It exposes the MCP interface, maintains the active VOPRF server context, validates protocol requests, manages evaluation admission and resource limits, invokes the assertion-evaluation engine, and returns protocol responses.
-Version 1 maintains no persistent assertion-evaluation state between requests.
+The mapper identifies where Omneum's canonical fields exist in those objects.
 
-### 3.3 Assertion Evaluation Engine
+```text
+Application Record
+       ↓
+ ContextMapper
+       ↓
+Canonical Assertion + Provenance Fields
+```
 
-The assertion-evaluation engine is invoked by the deployment after request
-validation. It consumes the validated assertion graph and source-pair inputs
-and returns source-reliability scores, claim-support results, conflicts, and
-evaluation metadata to the deployment.
+The application does not need to reconstruct its runtime objects around Omneum.
 
-The algorithm is versioned independently from the protocol and linkage
-encoding.
+Concrete provenance should be mapped into the corresponding canonical fields when it exists. Examples include upstream source relationships, citations, assertion lineage, source modification timestamps, and retrieval records.
 
-## 4. End-to-End Workflow
+If the runtime does not have a field, leave it unset.
 
-This section describes the request path from application data to an assertion-evaluation response.
+Do not manufacture provenance to fill the schema.
 
-### 4.1 Application Integration
+Arbitrary application metadata can be retained separately. It does not automatically participate in dependency estimation.
 
-Omneum does not require the deployment to ingest or parse raw application data. The calling application retrieves information from its upstream systems and supplies it through one of the SDK's application-facing integration paths.
-Applications that already have normalized entity, attribute, value, and source information can construct a StructuredAssertion directly. Existing retrieval or tool outputs can instead be adapted through a ContextMapper. Applications requiring direct control over the lower-level representation can supply Observation objects.
-Upstream systems may include APIs, databases, documents, knowledge bases, MCP tools, or agent outputs. Semantic normalization—deciding which retrieved information represents the same entity, attribute, and structured value—remains application-defined rather than being inferred by the Omneum deployment.
+The complete mapping contract is documented in [`context_mapper.md`](context_mapper.md).
 
-### 4.2 Canonicalization
+## 3. Client-Side Evaluation Preparation
 
-After the application-facing input has been converted into Omneum's structured assertion representation, the SDK canonicalizes its source, entity, attribute, and value fields according to the deterministic profiles defined by the canonicalization specification. Canonical values are then serialized into the fixed protocol schemas.
-This processing occurs client-side before VOPRF linkage. Canonicalization normalizes representations within an already established semantic identity; it does not determine semantic equivalence between differently expressed application data
+Before an assertion evaluation is sent to the server, the Python SDK prepares the information needed by the evaluation protocol.
 
-### 4.3 Privacy-Preserving Linkage
+At a high level:
 
-After serialization, the SDK domain-encodes source, attribute, and claim
-payloads and performs the client side of the VOPRF protocol. The deployment
-evaluates blinded elements using its active VOPRF key, while the SDK verifies
-the returned proof and finalizes the resulting linkage tokens.
+```text
+StructuredAssertion / ContextMapper
+              ↓
+      Canonical Observations
+              ↓
+ Dependency Signal Derivation
+              ↓
+Pairwise Dependency Estimation
+              ↓
+       Linkage Encoding
+              ↓
+          VOPRF
+              ↓
+   Evaluation Request
+```
 
-Assertion-evaluation requests contain the finalized tokens as opaque identifiers
-rather than the canonical application values from which they were derived.
+These stages happen behind the high-level SDK interfaces.
 
-### 4.4 Assertion-Evaluation Request Construction
+### Semantic normalization
 
-The SDK constructs an `evaluate_assertions` request from the generated linkage
-tokens and locally computed source-pair inputs. The request contains the
-complete assertion set, source-pair matrix, and protocol metadata required by
-the wire contract.
+Semantic normalization belongs to the application.
 
-### 4.5 Request Submission
+Omneum does not use an LLM to decide that two differently expressed pieces of retrieved information represent the same entity, attribute, and value.
 
-The SDK submits the request to the Omneum deployment through the configured
-transport. The version-1 reference implementation uses local MCP stdio. Remote
-transport and Omneum Cloud are not currently implemented.
+The SDK operates on the structured representation supplied by the integration.
 
-### 4.6 Assertion Evaluation
+### Canonical representation
 
-The deployment validates the request and constructs the request-scoped graph
-from the submitted opaque identifiers. After validation and admission, it
-invokes the configured assertion-evaluation algorithm.
+The SDK converts application-facing inputs into Omneum's internal observation representation.
 
-Linkage tokens remain opaque to the deployment; the server does not resolve
-them back to application values.
+An observation associates a structured claim with the source that produced it and can retain provenance needed for dependency estimation.
 
-### 4.7 Evaluation Response
+Canonicalization also provides deterministic byte representations for values that participate in privacy-preserving linkage.
 
-The deployment serializes the evaluation result into the versioned protocol
-response and returns it to the SDK. The SDK validates the response metadata and
-structure before mapping opaque identifiers back to application-local values.
+Canonical encoding rules are documented in [`canonicalization.md`](canonicalization.md).
 
-## 5. Assertion Graph
+## 4. Source Dependency Estimation
 
-Each `evaluate_assertions` request defines a complete request-scoped graph from
-its submitted assertion triples. The deployment constructs this graph only
-after protocol and topology validation.
+Source dependency is estimated on the client before the assertion evaluation request is constructed.
 
-### 5.1 Graph Structure
+The estimator operates on provenance and structural information available in the current evaluation.
 
-The graph is bipartite: source and claim nodes are connected by assertion
-edges. Attribute identifiers group claims representing competing values for
-the same application-defined property.
+Canonical dependency signals are:
 
-### 5.2 Graph Construction
+```text
+upstream
+citation
+assertion_lineage
+ownership
+temporal
+graph
+retrieval
+```
 
-The deployment constructs the graph directly from opaque `source_id`,
-`attribute_id`, and `claim_id` values in the validated request. The graph
-exists only for the lifetime of that evaluation and is discarded after the
-request completes.
+Concrete provenance is preferred over application-generated dependency scores. The SDK derives the corresponding signals when the required information is available.
 
-## 6. Deployment
+Integrations that already compute a value matching one of Omneum's canonical signal semantics can provide an explicit `DependencySignal`, but this is an advanced path rather than the normal integration boundary.
 
-### 6.1 Reference Implementation
+### Observable and unavailable signals
 
-The version-1 reference deployment is a local MCP server using stdio transport.
-The server exposes `ping`, `evaluate_voprf`, and `evaluate_assertions`,
-maintains the configured VOPRF server context, and executes assertion evaluation
-through a bounded local executor.
+A signal can be observable or unavailable.
 
-Remote serving, persistent evaluation state, and multi-tenant Cloud
-infrastructure are outside the current reference implementation.
+These are different states:
 
-### 6.2 Trust Boundary
+```python
+DependencySignal(value=0.0, observable=True)
+DependencySignal(value=0.0, observable=False)
+```
 
-The primary trust boundary lies between the SDK and the Omneum deployment.
-Canonical application values, provenance inputs, source metadata, and VOPRF
-client state remain on the client side of that boundary.
+The first means the relevant information was available and indicated no dependency on that axis.
 
-The deployment receives blinded elements during VOPRF evaluation and opaque
-linkage tokens, numeric source-pair inputs, and protocol metadata during
-assertion evaluation. It does not receive the canonical application values
-represented by those tokens.
+The second means the information needed to evaluate that signal was unavailable.
 
-## 7. State Model
+The estimator does not convert unavailable signals into observed zeroes.
 
-The version-1 deployment is stateless with respect to assertion evaluation.
-Each request supplies the complete graph and source-pair matrix required for
-execution.
+### Pairwise dependency
 
-The deployment retains only configured runtime state required to serve
-requests, including the active deployment configuration and VOPRF server
-context. Assertion graphs, blinded elements, proofs, finalized tokens, and
-evaluation results are not persisted between calls.
+For each source pair, the estimator combines the signals that were actually observable.
 
-Application-local mappings between protocol identifiers and canonical values
-remain owned by the SDK or calling application.
+Dependency is normalized over those observable signals rather than over the entire configured signal set.
+
+Signal coverage is retained separately.
+
+Conceptually:
+
+```text
+observable provenance
+        ↓
+dependency signals
+        ↓
+pairwise dependency
+        +
+weighted signal coverage
+```
+
+This allows the system to distinguish an observed dependency relationship from how much information was available to estimate it.
+
+For example, if upstream provenance is the only observable signal and establishes complete dependency, the dependency estimate can be `1.0` even when weighted signal coverage is substantially lower.
+
+Coverage is not a probability that the dependency estimate is correct.
+
+### Evaluation boundary
+
+The application provenance used to derive dependency remains on the client.
+
+The server-side assertion evaluation receives the numeric source-pair information required by the evaluation rather than the raw provenance used to derive it.
+
+This keeps runtime-specific provenance outside the server evaluation boundary.
+
+## 5. Privacy-Preserving Linkage
+
+Omneum needs stable identifiers for matching private source and structured assertion data across an evaluation without sending those values to the server in plaintext.
+
+The SDK uses an RFC 9497 VOPRF with the `ristretto255-SHA512` ciphersuite for this linkage.
+
+The flow is:
+
+```text
+Private Application Value
+          ↓
+ Canonicalize + Serialize
+          ↓
+       Blind Locally
+          ↓
+  VOPRF Server Evaluation
+          ↓
+   Verify Proof Locally
+          ↓
+   Unblind + Finalize
+          ↓
+      Linkage Token
+```
+
+The client blinds each encoded input before sending it to the server.
+
+The server evaluates the blinded element using its VOPRF private key and returns the evaluated element together with a proof.
+
+The client verifies the proof and finalizes the result locally.
+
+Matching encoded inputs under the same linkage configuration resolve to stable opaque identifiers.
+
+The VOPRF is used for linkage privacy. It is not general request encryption.
+
+The server can still observe protocol traffic and relationships among opaque identifiers submitted during evaluation.
+
+Protocol details are documented in [`protocol.md`](protocol.md).
+
+## 6. Evaluation Graph
+
+Assertion evaluation operates on a bipartite graph.
+
+Sources and claims are nodes. Assertions form edges between a source and the claim it supports.
+
+```text
+Source A ─────┐
+              ├── Claim X
+Source B ─────┘
+
+Source C ───────── Claim Y
+```
+
+Source dependency modifies how much apparently separate support should be treated as independent.
+
+Two sources can therefore support the same claim while contributing less than two fully independent units of support.
+
+The graph is constructed for the current evaluation from the opaque source and claim identifiers produced by the linkage process together with the numeric evaluation inputs supplied by the client.
+
+The server does not need the plaintext source identifiers or structured values to construct this graph.
+
+## 7. Evaluation
+
+The server performs assertion evaluation over the request-scoped graph.
+
+The evaluation produces structured results that can include:
+
+- claim support;
+- estimated independent support;
+- conflicting claims;
+- pairwise source dependency and associated coverage.
+
+`support` is a graph-derived score. It is not a probability that a claim is correct.
+
+`estimated_independent_support_count` adjusts raw supporting-source count according to estimated dependency among those sources.
+
+Conflicting structured values remain separate claims rather than being collapsed into one value.
+
+The server returns these values to the SDK as structured evaluation data.
+
+Routing decisions remain outside Omneum. An application can retrieve again, branch to another check, reject disputed context, or apply its own policy before the next model call.
+
+## 8. Client and Server Responsibilities
+
+The client SDK is responsible for application-facing evaluation preparation.
+
+This includes:
+
+- adapting structured assertions or mapped runtime data;
+- preserving canonical provenance fields;
+- deriving available dependency signals;
+- estimating pairwise source dependency;
+- canonicalizing linkage inputs;
+- performing VOPRF blinding, proof verification, and finalization;
+- constructing validated evaluation requests;
+- decoding structured evaluation responses.
+
+The server is responsible for the deployment-side protocol and evaluation boundary.
+
+This includes:
+
+- serving the MCP interface;
+- evaluating blinded VOPRF inputs with the deployment key;
+- validating assertion-evaluation requests;
+- constructing the request-scoped evaluation graph;
+- running assertion evaluation;
+- returning structured results.
+
+The split is intentional. Private application data and detailed runtime provenance do not need to become server-side application state for the evaluation to work.
+
+## 9. Deployment Model
+
+A local Omneum deployment is initialized with:
+
+```bash
+omneum init
+```
+
+The deployment contains configuration and VOPRF key material.
+
+```text
+config.toml
+keys/
+└── voprf.key
+```
+
+The non-secret deployment configuration is stored separately from the VOPRF private key.
+
+The private key must not be committed to source control.
+
+For the current local deployment model, the Python SDK connects to the Omneum MCP server over `stdio`.
+
+```text
+Agent Application
+       │
+       │ Python SDK
+       ▼
+  MCP stdio transport
+       │
+       ▼
+  Omneum Server
+```
+
+Remote transport is not currently part of the Python SDK surface.
+
+## 10. State Model
+
+Assertion evaluation is request-scoped.
+
+The server receives the inputs required for an evaluation, constructs the graph for that request, runs the evaluation, and returns the result.
+
+The current open-source server does not require a persistent application database for this flow.
+
+Persistent organizations, workspaces, agents, historical evaluation state, and other control-plane data belong to a hosted deployment model rather than the local MCP evaluation path.
+
+VOPRF key material is deployment state and persists independently of individual assertion evaluations.
+
+## 11. Trust Boundary
+
+The primary trust boundary is between the application-side SDK and the Omneum server.
+
+The client retains:
+
+- raw source identifiers;
+- structured entity, attribute, and value data;
+- source provenance and retrieval records;
+- application metadata;
+- semantic normalization logic;
+- local VOPRF blinding and finalization state.
+
+The server receives what it needs to perform the protocol:
+
+- blinded VOPRF inputs during linkage;
+- opaque linkage identifiers during assertion evaluation;
+- numeric source-pair dependency data required by the evaluation;
+- protocol and deployment metadata.
+
+The VOPRF prevents the server from learning the private values used to derive linkage tokens directly from the VOPRF exchange.
+
+It does not conceal all request structure. The server can observe opaque identifiers and relationships submitted during an evaluation.
+
+This boundary should be kept in mind when adding new protocol fields: application provenance should not cross it merely because it is convenient for the server implementation.
+
+## 12. Design Constraints
+
+The current architecture deliberately keeps several responsibilities outside Omneum.
+
+The application owns semantic normalization and routing policy.
+
+The SDK owns adaptation, dependency estimation, and privacy-preserving linkage.
+
+The server owns the request-scoped graph evaluation and VOPRF server operation.
+
+The system does not require complete provenance. Partial provenance is expected, and unavailable signals remain unavailable.
+
+The local MCP server does not depend on the hosted Omneum database or control plane.
+
+These boundaries may evolve as hosted deployments and additional SDKs are introduced, but changes should preserve the distinction between application data, client-side evaluation preparation, and server-side evaluation.
