@@ -756,7 +756,7 @@
           "hashes": [
             {
               "alg": "SHA-256",
-              "content": "401bc78d9ce9a1c202e9eafa2d83bd4a08c11ecb480d15b4c99fd3f557e36642"
+              "content": "8471bd159524d8952e0129877c6bc2a4baba842a32cfb05c3bc8f3c3f974d8cd"
             }
           ],
           "type": "distribution",
@@ -1807,7 +1807,12 @@
     }
   ],
   "metadata": {
-    "timestamp": "2026-08-31T02:56:04.396015+00:00",
+    "properties": [
+      {
+        "name": "cdx:reproducible",
+        "value": "true"
+      }
+    ],
     "tools": {
       "components": [
         {
@@ -1911,7 +1916,6 @@
       ]
     }
   },
-  "serialNumber": "urn:uuid:8c41b47b-f4de-487c-bc6f-6ad39fe490dd",
   "version": 1,
   "$schema": "http://cyclonedx.org/schema/bom-1.6.schema.json",
   "bomFormat": "CycloneDX",
