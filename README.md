@@ -40,13 +40,13 @@ Install the wheel matching your Python version and platform.
 For example, on an Apple Silicon with Python 3.14:
 
 ```bash
-pip install ./omneum-1.0.0-cp314-cp314-macosx_11_0_arm64.whl
+pip install ./omneum-1.0.1-cp314-cp314-macosx_11_0_arm64.whl
 ```
 
 If you pull an updated wheel with the same package version, force the reinstall:
 
 ```bash
-pip install --force-reinstall ./omneum-1.0.0-cp314-cp314-macosx_11_0_arm64.whl
+pip install --force-reinstall ./omneum-1.0.1-cp314-cp314-macosx_11_0_arm64.whl
 ```
 
 ### 2. Initialize a local deployment

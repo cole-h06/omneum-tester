@@ -20,7 +20,7 @@ Install the Omneum wheel matching your Python version and platform from the pack
 For example, on Apple Silicon with Python 3.14:
 
 ```bash
-pip install ./omneum-1.0.0-cp314-cp314-macosx_11_0_arm64.whl
+pip install ./omneum-1.0.1-cp314-cp314-macosx_11_0_arm64.whl
 ```
 
 Then install LlamaIndex:

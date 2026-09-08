@@ -28,7 +28,7 @@ Install the Omneum wheel for your platform from the package root.
 For example, on Apple Silicon with Python 3.14:
 
 ```bash
-pip install ./omneum-1.0.0-cp314-cp314-macosx_11_0_arm64.whl
+pip install ./omneum-1.0.1-cp314-cp314-macosx_11_0_arm64.whl
 ```
 
 Choose the wheel matching your Python version and operating system.

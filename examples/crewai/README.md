@@ -21,7 +21,7 @@ Install the Omneum wheel matching your Python version and platform from the pack
 For example, on Apple Silicon with Python 3.13:
 
 ```bash
-pip install ./omneum-1.0.0-cp313-cp313-macosx_11_0_arm64.whl
+pip install ./omneum-1.0.1-cp313-cp313-macosx_11_0_arm64.whl
 ```
 
 Then install CrewAI:
