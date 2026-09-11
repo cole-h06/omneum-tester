@@ -23,20 +23,16 @@ For reproducibility purposes, the retrieval agents are simulated with simple Pyt
 
 ## Requirements
 
-Install the Omneum wheel for your platform from the package root.
-
-For example, on Apple Silicon with Python 3.14:
+From the repository root, install the locked environment with uv 0.12.10:
 
 ```bash
-pip install ./omneum-1.0.1-cp314-cp314-macosx_11_0_arm64.whl
+uv sync --locked
 ```
-
-Choose the wheel matching your Python version and operating system.
 
 ## Run
 
 ```bash
-python -m examples.enterprise.workflow.run
+uv run --locked -m examples.enterprise.workflow.run
 ```
 
 This example creates a temporary local stdio deployment using a deterministic, example-only VOPRF key. The temporary key is removed when the workflow exits and must never be used in production.
@@ -50,86 +46,20 @@ Application conclusion
 Customer content must be redacted.
 Provider retention must be 0 days.
 Processing must remain in the EU.
-The stale deployment runbook and recent readiness brief disagree with these controls.
-The readiness brief is derived from the stale runbook and is not an independent source.
-Vendor documentation confirms only:
-• Provider retention
-• Processing region
 
-Source reliability
+...
 
-AI data-governance policy
-Reliability: 0.27
-
-AI gateway
-Reliability: 0.27
-
-Copilot readiness brief
-Reliability: 0.00
-
-Model registry
-Reliability: 0.27
-
-Stale deployment runbook
-Reliability: 0.00
-
-Vendor enterprise data controls
-Reliability: 0.18
-
-Claims
-
-Claim: Input data policy = redacted customer content only
-Support: 0.10
-Agreement weight: 0.60
-Supporting sources: 3
-Estimated independent support: 1.65
-Source-dependency confidence: 1.00
-Conflicting value: unredacted customer content allowed
-
-Explanation:
-3 sources support this claim, with an estimated 1.65 independent sources. The available dependency signals indicate that some supporting sources are related. 1 conflicting value was identified for the same attribute.
-
-Claim: Processing region = EU
+Provider retention = 0 days
 Support: 0.19
-Agreement weight: 0.67
+
+Highest support
+
 Supporting sources: 4
-Estimated independent support: 2.40
-Source-dependency confidence: 1.00
-Conflicting value: US
+Independent support: 2.37
 
-Explanation:
-4 sources support this claim, with an estimated 2.40 independent sources. The available dependency signals indicate that some supporting sources are related. 1 conflicting value was identified for the same attribute.
-
-Claim: Provider retention = 0 days
-Support: 0.19
-Agreement weight: 0.67
-Supporting sources: 4
-Estimated independent support: 2.40
-Source-dependency confidence: 1.00
-Conflicting value: 30 days
-
-Explanation:
-4 sources support this claim, with an estimated 2.40 independent sources. The available dependency signals indicate that some supporting sources are related. 1 conflicting value was identified for the same attribute.
-
-Pair dependencies
-
-AI data-governance policy ↔ Model registry
-
-Independence: 0.46
-
-• Direct citation
-• 3 derived assertions
-• Updated 23 hours apart
-• 3 matching claims
-
-Stale deployment runbook ↔ Copilot readiness brief
-
-Independence: 0.42
-
-• Direct citation
-• 3 derived assertions
-• Same owner
-• 3 matching claims
+Conflicting value:
+30 days (support 0.00)
+```
 
 ## Related examples
 
@@ -137,6 +67,4 @@ The enterprise workflow is reused by the framework integrations.
 
 - `examples/langgraph`
 - `examples/crewai`
-- `examples/llamaindex`
-- `examples/microsoft`
 - `examples/openai_agents`

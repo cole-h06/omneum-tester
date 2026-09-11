@@ -15,26 +15,16 @@ evaluation. The LlamaIndex Workflow provides the orchestration.
 
 ## Requirements
 
-Install the Omneum wheel matching your Python version and platform from the package root.
-
-For example, on Apple Silicon with Python 3.14:
+From the repository root, install the locked environment with uv 0.12.10:
 
 ```bash
-pip install ./omneum-1.0.1-cp314-cp314-macosx_11_0_arm64.whl
+uv sync --locked --group llamaindex
 ```
-
-Then install LlamaIndex:
-
-```bash
-pip install llamaindex
-```
-
-Choose the Omneum wheel matching your Python version and operating system.
 
 ## Run
 
 ```bash
-python -m examples.llamaindex.run
+uv run --locked --group llamaindex -m examples.llamaindex.run
 ```
 
 ## Files

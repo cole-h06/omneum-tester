@@ -15,26 +15,16 @@ evaluation. The LangGraph graph provides the orchestration.
 
 ## Requirements
 
-Install the Omneum wheel matching your Python version and platform from the package root.
-
-For example, on Apple Silicon with Python 3.14:
+From the repository root, install the locked environment with uv 0.12.10:
 
 ```bash
-pip install ./omneum-1.0.1-cp314-cp314-macosx_11_0_arm64.whl
+uv sync --locked --group langgraph
 ```
-
-Then install LangGraph:
-
-```bash
-pip install langgraph
-```
-
-Choose the Omneum wheel matching your Python version and operating system.
 
 ## Run
 
 ```bash
-python -m examples.langgraph.run
+uv run --locked --group langgraph -m examples.langgraph.run
 ```
 
 ## Files

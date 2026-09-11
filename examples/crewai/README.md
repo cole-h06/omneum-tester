@@ -14,30 +14,18 @@ orchestration changes.
 
 ## Requirements
 
-CrewAI supports Python 3.10–3.13 for this example.
+Use Python 3.11–3.13 for this Omneum example; CrewAI excludes Python 3.14.
 
-Install the Omneum wheel matching your Python version and platform from the package root.
-
-For example, on Apple Silicon with Python 3.13:
+From the repository root, install the locked environment with uv 0.12.10:
 
 ```bash
-pip install ./omneum-1.0.1-cp313-cp313-macosx_11_0_arm64.whl
+uv sync --locked --python 3.13 --group crewai
 ```
-
-Then install CrewAI:
-
-```bash
-pip install crewai
-```
-
-Choose the Omneum wheel matching your Python version and operating system.
 
 ## Run
 
-From the package root:
-
 ```bash
-python -m examples.crewai.run
+uv run --locked --python 3.13 --group crewai -m examples.crewai.run
 ```
 
 ## Files

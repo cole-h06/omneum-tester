@@ -8,31 +8,33 @@ For a shorter end-to-end setup, start with the repository [`README`](../README.m
 
 ### Install Omneum
 
-Install the wheel matching your Python version and platform.
+Omneum currently supports CPython 3.11 through 3.14.
 
-For example, on Apple Silicon with Python 3.14:
+Install uv 0.12.10 and a Rust toolchain, then install Omneum from a source checkout:
 
 ```bash
-pip install ./omneum-1.0.1-cp314-cp314-macosx_11_0_arm64.whl
+git clone https://github.com/cole-h06/omneum.git
+cd omneum
+uv sync --locked --no-default-groups
+source .venv/bin/activate
 ```
 
-The tester repository includes wheels for supported Python and platform combinations. You do not need the Omneum source repository.
-
-If you pull an updated wheel carrying the same package version, force the reinstall:
+If you're developing Omneum itself:
 
 ```bash
-pip install --force-reinstall ./omneum-1.0.1-cp314-cp314-macosx_11_0_arm64.whl
+uv sync --locked
+uv run --locked pytest
 ```
 
 ### Initialize Omneum
 
-Initialize a local deployment:
+First follow the [daemon deployment instructions](architecture.md#10-deployment), then initialize the public configuration as `omneum-mcp`:
 
 ```bash
 omneum init
 ```
 
-This creates the deployment configuration and VOPRF key material used by the local Omneum server.
+This obtains the initial public key from the authenticated daemon and creates public deployment configuration only.
 
 ### Connect to the server
 
@@ -73,7 +75,7 @@ An assertion is identified by:
 For example:
 
 ```text
-("company", "acme-corp", "quarterly_revenue_usd") → 42000000
+("service", "acme-corp", "quarterly_revenue_usd") → 42000000
 ```
 
 Construct it directly when your application already has that structure:
@@ -91,7 +93,7 @@ from omneum import (
 now = datetime.now(timezone.utc)
 
 assertion = StructuredAssertion(
-    entity_namespace="company",
+    entity_namespace="service",
     entity="acme-corp",
     attribute="quarterly_revenue_usd",
     value=42_000_000,
@@ -163,7 +165,7 @@ mapper = ContextMapper(
         kind="web_document",
         identifier=result["url"],
     ),
-    entity_namespace=lambda result: "company",
+    entity_namespace=lambda result: "service",
     entity="company",
     attribute=lambda result: "quarterly_revenue_usd",
     value="revenue",
@@ -228,11 +230,11 @@ These fields have different semantics.
 
 `cited_sources` records explicit source references.
 
-`parent_assertion_ids` describes assertion-level derivation between workflow outputs.
+`parent_assertion_ids` identifies the direct parent assertions from which an assertion was derived. The v2 assertion-lineage signal evaluates these direct relationships; it does not infer transitive ancestry.
 
 `retrievals` records retrieval executions that surfaced the information.
 
-`source_modified_at` is the source's own known modification time. Do not substitute `observed_at` when that timestamp is unavailable.
+`source_modified_at` is the source's own known modification time. Do not substitute `observed_at` when that timestamp is unavailable. Leave it unset when the available timestamp is too coarse for the configured temporal window.
 
 Extra application context can be retained as metadata:
 
@@ -352,7 +354,7 @@ assertion_lineage  = unknown
 ...
 ```
 
-The estimator normalizes dependency over the signals that were actually observable.
+The estimator takes the strongest observed, non-excluded dependency signal. An observed zero on another dependency mechanism does not dilute positive upstream evidence.
 
 With an upstream weight of `0.25`, the result can therefore be:
 
@@ -382,7 +384,7 @@ source = AssertionSource(
 )
 ```
 
-If the source modification time is unknown, leave it unset.
+If the source modification time is unknown or too coarse for the configured temporal window, leave it unset.
 
 ### Custom estimator configuration
 
@@ -539,7 +541,7 @@ The SDK handles blinding, proof verification, finalization, and token encoding a
 
 ## Configuration
 
-`omneum init` creates the configuration and VOPRF key material for a local deployment.
+`omneum init` obtains the initial public key from the authenticated daemon and creates public configuration. Existing pins are preserved; `--public-key-hex` optionally checks an expected key. See [daemon deployment instructions](architecture.md#10-deployment).
 
 Load it with:
 
@@ -560,12 +562,11 @@ export OMNEUM_CONFIG_DIR=/path/to/omneum
 A local deployment keeps non-secret configuration separate from its VOPRF private key:
 
 ```text
-config.toml
-keys/
-└── voprf.key
+config.toml  # Python: public metadata only
+# Separate crypto identity: protected directory containing voprf.key
 ```
 
-Do not commit `keys/` to source control.
+Never retain an MCP-readable private-key copy; follow the [daemon deployment instructions](architecture.md#10-deployment).
 
 For local `stdio`, `from_local_deployment()` loads the deployment ID, VOPRF settings, linkage-encoding version, and pinned server public key required by the client.
 
@@ -586,7 +587,7 @@ result = await client.evaluate(
 
 - **Remote transport** is not currently supported by the Python SDK. Client connections use a local MCP server over `stdio`.
 
-- **Python support** currently covers CPython 3.11 through 3.14 for the platforms represented by the prebuilt tester wheels. JavaScript and TypeScript SDKs are not yet available.
+- **Python support** currently covers CPython 3.11 through 3.14. JavaScript and TypeScript SDKs are not yet available.
 
 - **Token metadata storage** is not managed automatically by the SDK. Applications that persist linkage tokens are responsible for retaining the deployment, key version, linkage configuration, purpose, and token metadata needed to compare them correctly.
 

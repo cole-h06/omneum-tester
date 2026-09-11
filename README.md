@@ -6,7 +6,7 @@ Agent workflows routinely assemble context from search results, APIs, databases,
 
 Omneum evaluates that structure without adding another LLM call.
 
-> **Tester package:** This repository contains prebuilt Omneum wheels, documentation, and examples for integrating Omneum into an existing agent application. You do not need the Omneum source repository.
+> **Tester package:** This repository contains prebuilt Omneum wheels, local evaluator binaries, documentation, and examples for integrating Omneum into an existing agent application. You do not need the Omneum source repository.
 
 ## What Omneum does
 
@@ -35,29 +35,58 @@ python3.14 -m venv .venv
 source .venv/bin/activate
 ```
 
-Install the wheel matching your Python version and platform.
+Install the Omneum 1.0.2 wheel matching your Python version and platform.
 
-For example, on an Apple Silicon with Python 3.14:
+For example, on Apple Silicon with Python 3.14:
 
 ```bash
-pip install ./omneum-1.0.1-cp314-cp314-macosx_11_0_arm64.whl
+pip install ./omneum-1.0.2-cp314-cp314-macosx_11_0_arm64.whl
 ```
 
 If you pull an updated wheel with the same package version, force the reinstall:
 
 ```bash
-pip install --force-reinstall ./omneum-1.0.1-cp314-cp314-macosx_11_0_arm64.whl
+pip install --force-reinstall ./omneum-1.0.2-cp314-cp314-macosx_11_0_arm64.whl
 ```
 
-### 2. Initialize a local deployment
+### 2. Install the local evaluator
+
+Omneum 1.0.2 runs VOPRF evaluation in a separate local daemon. Install the daemon artifact matching your platform before initializing the deployment.
+
+Apple Silicon macOS:
+
+```bash
+sudo sh daemon/macos-aarch64/install-macos.sh \
+    daemon/macos-aarch64/omneumd \
+    "$(id -u)"
+```
+
+Intel macOS:
+
+```bash
+sudo sh daemon/macos-x86_64/install-macos.sh \
+    daemon/macos-x86_64/omneumd \
+    "$(id -u)"
+```
+
+Linux x86-64:
+
+```bash
+sudo sh daemon/linux-x86_64/install.sh \
+    daemon/linux-x86_64/omneumd
+```
+
+The daemon owns the VOPRF server key and exposes the local evaluation socket. The Python application does not receive the server private key.
+
+### 3. Initialize a local deployment
 
 ```bash
 omneum init
 ```
 
-This creates the deployment configuration and VOPRF key material used by the local server.
+Initialization verifies the local evaluator and stores the deployment configuration used by the SDK.
 
-### 3. Connect to the MCP server
+### 4. Connect to the MCP server
 
 Omneum runs locally as an MCP server over `stdio`:
 
@@ -222,13 +251,13 @@ Not every signal needs to exist for every pair.
 For example, if upstream provenance is the only observable signal and it indicates complete dependency, Omneum can return:
 
 ```text
-dependency                = 1.0
-weighted_signal_coverage  = 0.25
+dependency                  = 1.0
+weighted_signal_coverage    = 0.25
 ```
 
-The dependency estimate is normalized over the signals that were actually observable. Coverage is reported separately.
+The estimator takes the strongest observed, non-excluded dependency signal. An observed zero on another dependency mechanism does not dilute positive dependency evidence.
 
-That distinction is deliberate. A low coverage value means the estimator had limited information; it does not turn an observed dependency relationship into apparent independence.
+Coverage is reported separately. A low coverage value means the estimator had limited information; it does not turn an observed dependency relationship into apparent independence.
 
 Likewise:
 
@@ -236,7 +265,7 @@ Likewise:
 DependencySignal(value=0.0, observable=True)
 ```
 
-is different from a signal that was not observable at all. The former says the integration had information about that relationship and observed zero dependency on that axis. The latter says it did not have the information.
+is different from a signal that was not observable at all. The former records an observed zero on that dependency mechanism. The latter means the integration did not have the information.
 
 Pairwise dependency is then used to adjust raw source count into `estimated_independent_support_count`.
 

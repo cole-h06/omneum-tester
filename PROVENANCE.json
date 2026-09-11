@@ -1,79 +1,119 @@
 {
   "schema_version": 1,
   "source": {
-    "commit": "ad5e7df"
+    "commit": "f78b8efd197f69be124c434150ab9c09d12c7bf3"
   },
   "build": {
-    "github_actions_run_id": "34170644220"
+    "github_actions_run_id": "34548636064"
   },
   "artifacts": [
     {
-      "filename": "omneum-1.0.1-cp311-cp311-macosx_10_12_x86_64.whl",
-      "sha256": "fcefcdaee5be73431134b21ce76f83414d04af2b3b1649387fe4d32fc67bae71"
+      "filename": "omneum-1.0.2-cp311-cp311-macosx_10_12_x86_64.whl",
+      "sha256": "eb7a3f6c75127fdd38b324b2036026a5197ccc5f4d3329619a49e20f7b343ef4"
     },
     {
-      "filename": "omneum-1.0.1-cp311-cp311-macosx_11_0_arm64.whl",
-      "sha256": "b14dab0733e6a0c99deed6c97ff429d119e323be811f9e94cfacb620227ca1fc"
+      "filename": "omneum-1.0.2-cp311-cp311-macosx_11_0_arm64.whl",
+      "sha256": "bb6fbd9c5734e765028a3a2bc216a5c8b601b5d5fdbfd7b017e1f69002810fa5"
     },
     {
-      "filename": "omneum-1.0.1-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl",
-      "sha256": "0889c3e1cf311cee844c3f5b321df7c8007b7b1d5b9827025b2c3bce47a10f7b"
+      "filename": "omneum-1.0.2-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl",
+      "sha256": "08bae097d03bdfab0080a44cac1ee4fcdc5c55a965c968aa8f6cd0d3fa15d6a3"
     },
     {
-      "filename": "omneum-1.0.1-cp311-cp311-win_amd64.whl",
-      "sha256": "0b4da6e89372eeec7c0bee37c931c9da677f2f2e008066392094ca01016e402d"
+      "filename": "omneum-1.0.2-cp311-cp311-win_amd64.whl",
+      "sha256": "cf393659020f78868ba24e063d0f080a0c8290db9ec1a0be86dd11166a5bb356"
     },
     {
-      "filename": "omneum-1.0.1-cp312-cp312-macosx_10_12_x86_64.whl",
-      "sha256": "90728131a9b6aa85e3bc9b1bc28a193bdb027c3d6cfe65a3dbe5ade6651a9b4a"
+      "filename": "omneum-1.0.2-cp312-cp312-macosx_10_12_x86_64.whl",
+      "sha256": "45b9b33c221dfaee2862729175892d42ee11c615abe86bea92c489d26d35938c"
     },
     {
-      "filename": "omneum-1.0.1-cp312-cp312-macosx_11_0_arm64.whl",
-      "sha256": "8ee3b3356d64e5d575ea252b107e1dbb873582ef8a01eb4649f34161249fa693"
+      "filename": "omneum-1.0.2-cp312-cp312-macosx_11_0_arm64.whl",
+      "sha256": "e2b3249fa50b9ab3c36640a994cbeaa7fa8292e38e7cb71a7c5df72a874a9a5b"
     },
     {
-      "filename": "omneum-1.0.1-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl",
-      "sha256": "e8339d6cbba7f844ffb01d6b9286b4e806e1d006936d5741a7e5f99a8cac2c20"
+      "filename": "omneum-1.0.2-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl",
+      "sha256": "a96b3bc4475cf418d7715fcdcf5f8ed392126183271ae4acdc99dda54062793c"
     },
     {
-      "filename": "omneum-1.0.1-cp312-cp312-win_amd64.whl",
-      "sha256": "cd893dfc2003872668dfa6700d33f40d107a4f7552a5f3d9c40c2d284dff7606"
+      "filename": "omneum-1.0.2-cp312-cp312-win_amd64.whl",
+      "sha256": "2a333f1bc6b814d335f9a75bd849845787d0404399d224cea52aa3a7404ac317"
     },
     {
-      "filename": "omneum-1.0.1-cp313-cp313-macosx_10_12_x86_64.whl",
-      "sha256": "ecf74518b24f42a94c47f81cc90a1998a7d646109429c3f47cdbc4c0d1b59c94"
+      "filename": "omneum-1.0.2-cp313-cp313-macosx_10_12_x86_64.whl",
+      "sha256": "96d42b5a4ecea0865443ad3cf55ac3a75d9e6b4826f39704aff2bd7d4629f6d2"
     },
     {
-      "filename": "omneum-1.0.1-cp313-cp313-macosx_11_0_arm64.whl",
-      "sha256": "b75621ac4726f01e59005fee6e8ed359a7b90ebb536d2123ee523aa8a3e53955"
+      "filename": "omneum-1.0.2-cp313-cp313-macosx_11_0_arm64.whl",
+      "sha256": "9fae16ed7299c0e048c6473e3ef9e1922c687f64b8ef2d750e285a42415469cb"
     },
     {
-      "filename": "omneum-1.0.1-cp313-cp313-manylinux_2_17_x86_64.manylinux2014_x86_64.whl",
-      "sha256": "03f8249b20b2e2dfa42a00e7e1a7e1e44c00a75dae520cd5286ce3145436384b"
+      "filename": "omneum-1.0.2-cp313-cp313-manylinux_2_17_x86_64.manylinux2014_x86_64.whl",
+      "sha256": "63e3263643b18ba6c25a1d3c255a127988a692972029d4855ebf670befa88d2c"
     },
     {
-      "filename": "omneum-1.0.1-cp313-cp313-win_amd64.whl",
-      "sha256": "31d49c3274d4186cd13071f9b4b7cb12106048a3a075330e8e0af6113f8643b1"
+      "filename": "omneum-1.0.2-cp313-cp313-win_amd64.whl",
+      "sha256": "e7bd33b1d0e195ab9f125ba9e8601586fb32c7c82b0b5758fc29df885f47906c"
     },
     {
-      "filename": "omneum-1.0.1-cp314-cp314-macosx_10_12_x86_64.whl",
-      "sha256": "77c4324e5fbdd85c3800848f1dc30f644e236a592bc12410bf3a89e13a68dfc8"
+      "filename": "omneum-1.0.2-cp314-cp314-macosx_10_12_x86_64.whl",
+      "sha256": "f6995aafda8ef70379535dfa3d9171319310b20ebe0c8172bdf8df58d181004a"
     },
     {
-      "filename": "omneum-1.0.1-cp314-cp314-macosx_11_0_arm64.whl",
-      "sha256": "d9d2174d0067ebcdced1f8eb796790732de38e207e035f43b77f78ad412546fe"
+      "filename": "omneum-1.0.2-cp314-cp314-macosx_11_0_arm64.whl",
+      "sha256": "9614ff2527e0f88e15759939ae4b359329f33741f5116ea9a538cea8f3a66dc7"
     },
     {
-      "filename": "omneum-1.0.1-cp314-cp314-manylinux_2_17_x86_64.manylinux2014_x86_64.whl",
-      "sha256": "bbfffd683430c99dfc5a89bc127ecf38d24240a05ca08e8d4204fa3849eb91a3"
+      "filename": "omneum-1.0.2-cp314-cp314-manylinux_2_17_x86_64.manylinux2014_x86_64.whl",
+      "sha256": "dafcbeebc29e897d89235849b8813ae6c02c7e1cc9fc389cbb33701c7c37d472"
     },
     {
-      "filename": "omneum-1.0.1-cp314-cp314-win_amd64.whl",
-      "sha256": "c75db065f739e444f8cc8b0a18a29f787bf0fa7958a2a7a1d3fc203dab3f8c75"
+      "filename": "omneum-1.0.2-cp314-cp314-win_amd64.whl",
+      "sha256": "780f168c3b7ff3984ee1ff3d746fa9a10e25d7158bb8dcdd5d184a1a946ecf75"
+    },
+    {
+      "filename": "daemon/linux-x86_64/install.sh",
+      "sha256": "fc5f3929314d0ec40e24bcfff8b8e4a552e022c4e62650436f008596c3b07aa1"
+    },
+    {
+      "filename": "daemon/linux-x86_64/omneumd",
+      "sha256": "fb5f406b4eba9bf4408ba84c4ae242da2417edbd58b452af3571315b75bd96e9"
+    },
+    {
+      "filename": "daemon/linux-x86_64/systemd/omneumd.service",
+      "sha256": "b10bf482383313712fa41cd01e0143d9573724dc60c0d00917ade5c11d373994"
+    },
+    {
+      "filename": "daemon/linux-x86_64/sysusers.d/omneum.conf",
+      "sha256": "28c130f5bc8f5f552215910e2809133c54e5d17d58be5ed0ec14151d314f87d7"
+    },
+    {
+      "filename": "daemon/macos-aarch64/install-macos.sh",
+      "sha256": "088af5f8ac6ed5b8c5d11ff91e9d18481252ad3b8b592b92d52331f720568f78"
+    },
+    {
+      "filename": "daemon/macos-aarch64/launchd/ai.omneum.omneumd.plist",
+      "sha256": "962b983bea2f9061076f9cf6de3b6a51a34aeaed8d01b473f1876218faca57b3"
+    },
+    {
+      "filename": "daemon/macos-aarch64/omneumd",
+      "sha256": "74f455898d4695771f8a48e0226b269723fdd464e1c6c385a8d59e8c1aa48440"
+    },
+    {
+      "filename": "daemon/macos-x86_64/install-macos.sh",
+      "sha256": "088af5f8ac6ed5b8c5d11ff91e9d18481252ad3b8b592b92d52331f720568f78"
+    },
+    {
+      "filename": "daemon/macos-x86_64/launchd/ai.omneum.omneumd.plist",
+      "sha256": "962b983bea2f9061076f9cf6de3b6a51a34aeaed8d01b473f1876218faca57b3"
+    },
+    {
+      "filename": "daemon/macos-x86_64/omneumd",
+      "sha256": "a3e56ecb249827e0a13a247d0c93db471efa23727f510a7703cd445552edfa86"
     }
   ],
   "sbom": {
     "filename": "SBOM.json",
-    "sha256": "a126fc4fce1799ae07864aeadf89a76175ab4203e85dc872962b1332cb2766d7"
+    "sha256": "e6e9b9ffa2a7fd9fd97b8e37e7347d40aa9954f6a7609fc9eacdee7fbcacb723"
   }
 }

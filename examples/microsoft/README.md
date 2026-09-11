@@ -15,23 +15,15 @@ evaluation. The Microsoft Agent Framework agent provides the orchestration.
 
 ## Requirements
 
-- Python 3.10 or newer
+- Python 3.11–3.14
 - An `OPENAI_API_KEY`
 - An `OPENAI_MODEL`
+- Project and development dependencies
 
-Install the Omneum wheel matching your Python version and platform from the
-package root.
-
-For example, on Apple Silicon with Python 3.14:
+From the repository root, install the dependencies with uv 0.12.10:
 
 ```bash
-pip install ./omneum-1.0.1-cp314-cp314-macosx_11_0_arm64.whl
-```
-
-Then install the required packages:
-
-```bash
-pip install agent-framework
+uv sync --locked --group microsoft
 ```
 
 Export your OpenAI credentials:
@@ -41,12 +33,10 @@ export OPENAI_API_KEY=<your-api-key>
 export OPENAI_MODEL=gpt-5.5
 ```
 
-Choose the Omneum wheel matching your Python version and operating system.
-
 ## Run
 
 ```bash
-python -m examples.microsoft.run
+uv run --locked --group microsoft -m examples.microsoft.run
 ```
 
 ## Files
