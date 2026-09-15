@@ -1,7 +1,7 @@
 {
   "components": [
     {
-      "bom-ref": "PyJWT==2.13.0",
+      "bom-ref": "PyJWT==2.14.0",
       "description": "JSON Web Token implementation in Python",
       "externalReferences": [
         {
@@ -25,9 +25,9 @@
           "value": "crypto"
         }
       ],
-      "purl": "pkg:pypi/pyjwt@2.13.0",
+      "purl": "pkg:pypi/pyjwt@2.14.0",
       "type": "library",
-      "version": "2.13.0"
+      "version": "2.14.0"
     },
     {
       "bom-ref": "Pygments==2.21.0",
@@ -773,7 +773,7 @@
       "version": "3.12.0"
     },
     {
-      "bom-ref": "pip==26.1.2",
+      "bom-ref": "pip==26.2",
       "description": "The PyPA recommended tool for installing Python packages.",
       "externalReferences": [
         {
@@ -806,9 +806,9 @@
         }
       ],
       "name": "pip",
-      "purl": "pkg:pypi/pip@26.1.2",
+      "purl": "pkg:pypi/pip@26.2",
       "type": "library",
-      "version": "26.1.2"
+      "version": "26.2"
     },
     {
       "bom-ref": "platformdirs==4.11.8",
@@ -1490,7 +1490,7 @@
       "version": "4.16.0"
     },
     {
-      "bom-ref": "uvicorn==0.52.4",
+      "bom-ref": "uvicorn==0.53.0",
       "description": "The lightning-fast ASGI server.",
       "externalReferences": [
         {
@@ -1501,7 +1501,7 @@
         {
           "comment": "from packaging metadata Project-URL: Funding",
           "type": "other",
-          "url": "https://github.com/sponsors/encode"
+          "url": "https://github.com/sponsors/Kludex"
         },
         {
           "comment": "from packaging metadata Project-URL: Changelog",
@@ -1523,9 +1523,9 @@
         }
       ],
       "name": "uvicorn",
-      "purl": "pkg:pypi/uvicorn@0.52.4",
+      "purl": "pkg:pypi/uvicorn@0.53.0",
       "type": "library",
-      "version": "0.52.4"
+      "version": "0.53.0"
     }
   ],
   "dependencies": [
@@ -1534,7 +1534,7 @@
         "cryptography==50.0.1",
         "typing_extensions==4.16.0"
       ],
-      "ref": "PyJWT==2.13.0"
+      "ref": "PyJWT==2.14.0"
     },
     {
       "ref": "Pygments==2.21.0"
@@ -1627,7 +1627,7 @@
     },
     {
       "dependsOn": [
-        "PyJWT==2.13.0",
+        "PyJWT==2.14.0",
         "anyio==4.15.1",
         "httpx-sse==0.4.3",
         "httpx==0.28.1",
@@ -1642,7 +1642,7 @@
         "typer==0.27.2",
         "typing-inspection==0.4.4",
         "typing_extensions==4.16.0",
-        "uvicorn==0.52.4"
+        "uvicorn==0.53.0"
       ],
       "ref": "mcp==1.30.0"
     },
@@ -1653,7 +1653,7 @@
       "ref": "orjson==3.12.0"
     },
     {
-      "ref": "pip==26.1.2"
+      "ref": "pip==26.2"
     },
     {
       "ref": "platformdirs==4.11.8"
@@ -1742,7 +1742,7 @@
         "anyio==4.15.1",
         "pydantic==2.13.5",
         "starlette==1.6.0",
-        "uvicorn==0.52.4"
+        "uvicorn==0.53.0"
       ],
       "ref": "sse-starlette==3.4.11"
     },
@@ -1779,7 +1779,7 @@
         "python-dotenv==1.2.3",
         "typing_extensions==4.16.0"
       ],
-      "ref": "uvicorn==0.52.4"
+      "ref": "uvicorn==0.53.0"
     }
   ],
   "metadata": {
@@ -1788,7 +1788,7 @@
       "description": "A data trust gateway for agentic systems.",
       "name": "omneum",
       "type": "application",
-      "version": "1.0.2"
+      "version": "1.0.3"
     },
     "properties": [
       {

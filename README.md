@@ -35,23 +35,23 @@ python3.14 -m venv .venv
 source .venv/bin/activate
 ```
 
-Install the Omneum 1.0.2 wheel matching your Python version and platform.
+Install the Omneum 1.0.3 wheel matching your Python version and platform.
 
 For example, on Apple Silicon with Python 3.14:
 
 ```bash
-pip install ./omneum-1.0.2-cp314-cp314-macosx_11_0_arm64.whl
+pip install ./omneum-1.0.3-cp314-cp314-macosx_11_0_arm64.whl
 ```
 
 If you pull an updated wheel with the same package version, force the reinstall:
 
 ```bash
-pip install --force-reinstall ./omneum-1.0.2-cp314-cp314-macosx_11_0_arm64.whl
+pip install --force-reinstall ./omneum-1.0.3-cp314-cp314-macosx_11_0_arm64.whl
 ```
 
 ### 2. Install the local evaluator
 
-Omneum 1.0.2 runs VOPRF evaluation in a separate local daemon. Install the daemon artifact matching your platform before initializing the deployment.
+Omneum 1.0.3 runs VOPRF evaluation in a separate local daemon. Install the daemon artifact matching your platform before initializing the deployment.
 
 Apple Silicon macOS:
 
