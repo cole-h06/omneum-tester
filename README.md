@@ -49,6 +49,12 @@ If you pull an updated wheel with the same package version, force the reinstall:
 pip install --force-reinstall ./omneum-1.0.3-cp314-cp314-macosx_11_0_arm64.whl
 ```
 
+**Local numerical evaluation without a daemon:** If you already have mapped
+Omneum observations, use the [local evaluation adapter](LOCAL_EVALUATION.md)
+after installing the wheel. It reports dependency-adjusted support, source
+reliability and conflicts. Continue below for end-to-end SDK/MCP deployment,
+which also exercises VOPRF verification and daemon interaction.
+
 ### 2. Install the local evaluator
 
 Omneum 1.0.3 runs VOPRF evaluation in a separate local daemon. Install the daemon artifact matching your platform before initializing the deployment.

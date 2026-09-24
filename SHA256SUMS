@@ -1,11 +1,8 @@
 76a01435c706e3024e33625533944bdd8eda0d631f2032fd88d1ad3ccb07aacb  ./.gitignore
-3ed731b65d06150c138e2dadb0be0697550888a6b47eb8c45ecc9adba8b8e9bd  ./.pytest_cache/.gitignore
-37dc88ef9a0abeddbe81053a6dd8fdfb13afb613045ea1eb4a5c815a74a3bde4  ./.pytest_cache/CACHEDIR.TAG
-73fd6fccdd802c419a6b2d983d6c3173b7da97558ac4b589edec2dfe443db9ad  ./.pytest_cache/README.md
-4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945  ./.pytest_cache/v/cache/nodeids
 a7d09bf110972e5382dc2e1327311a401d4921ac62d8d0001b566a6faad53b3d  ./LICENSE
+6a37bd743872b58a17f29cbe642fd194434b2b6a0950f56443d6de066ad6fba6  ./LOCAL_EVALUATION.md
 6af86cd62b6d44c3168b53231f0165fd413a9c93a414c02e130b64ff4a597329  ./PROVENANCE.json
-c3ed3b430dff67f9bc22a7485a6118d1322528615e75e8b5b67daf309f9bc297  ./README.md
+3d605e0f5c35508feaaf792e7a8920aad1b1a22dc16c3ac797cc67935f8f187e  ./README.md
 9fd427cd73c2baeb7abe8b22f21054bf21d6273ef83fd39c9e496eeac6af08c9  ./SBOM.json
 fc5f3929314d0ec40e24bcfff8b8e4a552e022c4e62650436f008596c3b07aa1  ./daemon/linux-x86_64/install.sh
 2558e74d35bcccd17b5c8740febcda2dabc2381f917d6b01e1ed68c2526cd901  ./daemon/linux-x86_64/omneumd
@@ -58,6 +55,7 @@ b57e9770cb9193c6cc01ed34e0632b2b20e1701ed4950c18c449be48239f0656  ./examples/lan
 836c7ffcc8badd7c385623a1cd1b491a045de8d8a0520ddbfcbc38cb10c6f986  ./examples/llamaindex/__init__.py
 d5ae3c05df8e8ad9b5d6fc7ac8e02c136748219989474d54e9b54c9f8f90e568  ./examples/llamaindex/run.py
 bcb7249e3eaa29f54ad891ac916992902049aed2d1c875444bd1b27e4a64fae9  ./examples/llamaindex/workflow.py
+db935885b95f2d285720d3a2622cf4b9ff562cf6cd227b846addabe17f4df842  ./examples/local-evaluation-synthetic.json
 6eaf637801f389ccbe07e22d9d56c7231aed3b8d7e9c508893ba96b6f88c80a9  ./examples/microsoft/README.md
 6a386637d19f869e8577e19a99a8cdbed0020def0d62b4a382da95953a2be562  ./examples/microsoft/__init__.py
 2d114c77409c1e1deb5ff2aaa69aab1e3172674a191491c820645f13d08de0e1  ./examples/microsoft/agent.py
@@ -66,6 +64,7 @@ b1ae39d1a217eeee01a2caa8fde4f43e63da093c33ffff3424984bb3333463f0  ./examples/ope
 852359bafd02a43d3a1e331715cdc7efb09674466f854c83539f37bf27e66d36  ./examples/openai_agents/__init__.py
 fe01f09e08f72c3399bf613b7edd2cf9a9dcc4edcde3cb6c8f24daecea7db54b  ./examples/openai_agents/agent.py
 aeade66253d7acbfa4a5d970f0b5b793f877ed5fde2796375568b724ac974354  ./examples/openai_agents/run.py
+57f85ec3c897d845bb31873554f803b100be6364da891c11b523d7cadacec6b0  ./local_evaluation.py
 5e091b2930f899fdd5c0392b6b6ab986ab48a93d54a221b4377999d6149be5d6  ./omneum-1.0.3-cp311-cp311-macosx_10_12_x86_64.whl
 0f061efda16cc95b93eb429667254d6d80b6a4dc8cf66535bdd3930cc4b69064  ./omneum-1.0.3-cp311-cp311-macosx_11_0_arm64.whl
 abffa0f2321a194155cb70e10f6641c15fa45e07f9f6ab8eb835b7601c326ff1  ./omneum-1.0.3-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl
@@ -82,3 +81,4 @@ f4aa18b069e6a20d19de95ab2c3f22a5bb66d090cd1ee8e999e3a0632b919117  ./omneum-1.0.3
 948af692445b5e495ecb1c824c76fd3a71ebf2d0c90bcb94eaafd858b3a5ab4a  ./omneum-1.0.3-cp314-cp314-macosx_11_0_arm64.whl
 bd59122765432543669273f7de66ad31823adc6da1c23e17f9d9be7e95bbbda1  ./omneum-1.0.3-cp314-cp314-manylinux_2_17_x86_64.manylinux2014_x86_64.whl
 607df14821c94d7e3170541ccacc320bf084564640ca6fbf0147d1dd29d8795f  ./omneum-1.0.3-cp314-cp314-win_amd64.whl
+8805e4df21afcb097888b1cbf3c3acc5fe52615a9b587b36a88923f8dc54d06c  ./tests/test_local_evaluation.py

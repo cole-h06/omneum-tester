@@ -1,0 +1,335 @@
+{
+  "cases": [
+    {
+      "case_id": "synthetic-shared-root",
+      "estimator": {
+        "assertion_lineage_weight": 0.0,
+        "citation_weight": 0.0,
+        "dependency_cluster_threshold": null,
+        "estimator_version": "dependency-estimator-v4",
+        "graph_weight": 0.0,
+        "ownership_weight": 0.0,
+        "retrieval_weight": 0.0,
+        "temporal_weight": 0.0,
+        "temporal_window_seconds": 3600.0,
+        "upstream_weight": 1.0
+      },
+      "observations": [
+        {
+          "assertion_id": "assertion-0",
+          "cited_sources": null,
+          "claim": {
+            "attribute": "status",
+            "entity": "synthetic",
+            "entity_namespace": "service",
+            "value": "ready"
+          },
+          "dependency_signals": {},
+          "metadata": {},
+          "observed_at": "2026-01-01T00:00:00+00:00",
+          "parent_assertion_ids": null,
+          "retrievals": null,
+          "source": {
+            "identifier": "https://synthetic.invalid/0",
+            "kind": "web_document",
+            "owner_id": null
+          },
+          "source_modified_at": null,
+          "upstream_sources": [
+            {
+              "identifier": "https://root.invalid/shared",
+              "kind": "web_document"
+            }
+          ]
+        },
+        {
+          "assertion_id": "assertion-1",
+          "cited_sources": null,
+          "claim": {
+            "attribute": "status",
+            "entity": "synthetic",
+            "entity_namespace": "service",
+            "value": "ready"
+          },
+          "dependency_signals": {},
+          "metadata": {},
+          "observed_at": "2026-01-01T00:00:00+00:00",
+          "parent_assertion_ids": null,
+          "retrievals": null,
+          "source": {
+            "identifier": "https://synthetic.invalid/1",
+            "kind": "web_document",
+            "owner_id": null
+          },
+          "source_modified_at": null,
+          "upstream_sources": [
+            {
+              "identifier": "https://root.invalid/shared",
+              "kind": "web_document"
+            }
+          ]
+        },
+        {
+          "assertion_id": "assertion-2",
+          "cited_sources": null,
+          "claim": {
+            "attribute": "status",
+            "entity": "synthetic",
+            "entity_namespace": "service",
+            "value": "ready"
+          },
+          "dependency_signals": {},
+          "metadata": {},
+          "observed_at": "2026-01-01T00:00:00+00:00",
+          "parent_assertion_ids": null,
+          "retrievals": null,
+          "source": {
+            "identifier": "https://synthetic.invalid/2",
+            "kind": "web_document",
+            "owner_id": null
+          },
+          "source_modified_at": null,
+          "upstream_sources": [
+            {
+              "identifier": "https://root.invalid/shared",
+              "kind": "web_document"
+            }
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "identifier": "https://synthetic.invalid/0",
+          "kind": "web_document",
+          "owner_id": null
+        },
+        {
+          "identifier": "https://synthetic.invalid/1",
+          "kind": "web_document",
+          "owner_id": null
+        },
+        {
+          "identifier": "https://synthetic.invalid/2",
+          "kind": "web_document",
+          "owner_id": null
+        }
+      ]
+    },
+    {
+      "case_id": "synthetic-independent",
+      "estimator": {
+        "assertion_lineage_weight": 0.0,
+        "citation_weight": 0.0,
+        "dependency_cluster_threshold": null,
+        "estimator_version": "dependency-estimator-v4",
+        "graph_weight": 0.0,
+        "ownership_weight": 0.0,
+        "retrieval_weight": 0.0,
+        "temporal_weight": 0.0,
+        "temporal_window_seconds": 3600.0,
+        "upstream_weight": 1.0
+      },
+      "observations": [
+        {
+          "assertion_id": "assertion-0",
+          "cited_sources": null,
+          "claim": {
+            "attribute": "status",
+            "entity": "synthetic",
+            "entity_namespace": "service",
+            "value": "ready"
+          },
+          "dependency_signals": {},
+          "metadata": {},
+          "observed_at": "2026-01-01T00:00:00+00:00",
+          "parent_assertion_ids": null,
+          "retrievals": null,
+          "source": {
+            "identifier": "https://synthetic.invalid/0",
+            "kind": "web_document",
+            "owner_id": null
+          },
+          "source_modified_at": null,
+          "upstream_sources": [
+            {
+              "identifier": "https://root.invalid/0",
+              "kind": "web_document"
+            }
+          ]
+        },
+        {
+          "assertion_id": "assertion-1",
+          "cited_sources": null,
+          "claim": {
+            "attribute": "status",
+            "entity": "synthetic",
+            "entity_namespace": "service",
+            "value": "ready"
+          },
+          "dependency_signals": {},
+          "metadata": {},
+          "observed_at": "2026-01-01T00:00:00+00:00",
+          "parent_assertion_ids": null,
+          "retrievals": null,
+          "source": {
+            "identifier": "https://synthetic.invalid/1",
+            "kind": "web_document",
+            "owner_id": null
+          },
+          "source_modified_at": null,
+          "upstream_sources": [
+            {
+              "identifier": "https://root.invalid/1",
+              "kind": "web_document"
+            }
+          ]
+        },
+        {
+          "assertion_id": "assertion-2",
+          "cited_sources": null,
+          "claim": {
+            "attribute": "status",
+            "entity": "synthetic",
+            "entity_namespace": "service",
+            "value": "ready"
+          },
+          "dependency_signals": {},
+          "metadata": {},
+          "observed_at": "2026-01-01T00:00:00+00:00",
+          "parent_assertion_ids": null,
+          "retrievals": null,
+          "source": {
+            "identifier": "https://synthetic.invalid/2",
+            "kind": "web_document",
+            "owner_id": null
+          },
+          "source_modified_at": null,
+          "upstream_sources": [
+            {
+              "identifier": "https://root.invalid/2",
+              "kind": "web_document"
+            }
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "identifier": "https://synthetic.invalid/0",
+          "kind": "web_document",
+          "owner_id": null
+        },
+        {
+          "identifier": "https://synthetic.invalid/1",
+          "kind": "web_document",
+          "owner_id": null
+        },
+        {
+          "identifier": "https://synthetic.invalid/2",
+          "kind": "web_document",
+          "owner_id": null
+        }
+      ]
+    },
+    {
+      "case_id": "synthetic-conflict-missing-provenance",
+      "estimator": {
+        "assertion_lineage_weight": 0.0,
+        "citation_weight": 0.0,
+        "dependency_cluster_threshold": null,
+        "estimator_version": "dependency-estimator-v4",
+        "graph_weight": 0.0,
+        "ownership_weight": 0.0,
+        "retrieval_weight": 0.0,
+        "temporal_weight": 0.0,
+        "temporal_window_seconds": 3600.0,
+        "upstream_weight": 1.0
+      },
+      "observations": [
+        {
+          "assertion_id": "assertion-0",
+          "cited_sources": null,
+          "claim": {
+            "attribute": "status",
+            "entity": "synthetic",
+            "entity_namespace": "service",
+            "value": "ready"
+          },
+          "dependency_signals": {},
+          "metadata": {},
+          "observed_at": "2026-01-01T00:00:00+00:00",
+          "parent_assertion_ids": null,
+          "retrievals": null,
+          "source": {
+            "identifier": "https://synthetic.invalid/0",
+            "kind": "web_document",
+            "owner_id": null
+          },
+          "source_modified_at": null,
+          "upstream_sources": null
+        },
+        {
+          "assertion_id": "assertion-1",
+          "cited_sources": null,
+          "claim": {
+            "attribute": "status",
+            "entity": "synthetic",
+            "entity_namespace": "service",
+            "value": "ready"
+          },
+          "dependency_signals": {},
+          "metadata": {},
+          "observed_at": "2026-01-01T00:00:00+00:00",
+          "parent_assertion_ids": null,
+          "retrievals": null,
+          "source": {
+            "identifier": "https://synthetic.invalid/1",
+            "kind": "web_document",
+            "owner_id": null
+          },
+          "source_modified_at": null,
+          "upstream_sources": null
+        },
+        {
+          "assertion_id": "assertion-2",
+          "cited_sources": null,
+          "claim": {
+            "attribute": "status",
+            "entity": "synthetic",
+            "entity_namespace": "service",
+            "value": "paused"
+          },
+          "dependency_signals": {},
+          "metadata": {},
+          "observed_at": "2026-01-01T00:00:00+00:00",
+          "parent_assertion_ids": null,
+          "retrievals": null,
+          "source": {
+            "identifier": "https://synthetic.invalid/2",
+            "kind": "web_document",
+            "owner_id": null
+          },
+          "source_modified_at": null,
+          "upstream_sources": null
+        }
+      ],
+      "sources": [
+        {
+          "identifier": "https://synthetic.invalid/0",
+          "kind": "web_document",
+          "owner_id": null
+        },
+        {
+          "identifier": "https://synthetic.invalid/1",
+          "kind": "web_document",
+          "owner_id": null
+        },
+        {
+          "identifier": "https://synthetic.invalid/2",
+          "kind": "web_document",
+          "owner_id": null
+        }
+      ]
+    }
+  ],
+  "schema_version": 1
+}
